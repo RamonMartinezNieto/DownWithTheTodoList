@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+
+  downwiththetodolist.front.web:
+    image: ${DOCKER_REGISTRY-}downwiththetodolistfrontweb
+    build:
+      context: .
+      dockerfile: DownWithTheTodoList.Front.Web/Dockerfile
+
+  downwiththetodolist.ms.blocks:
+    image: ${DOCKER_REGISTRY-}downwiththetodolistmsblocks
+    build:
+      context: .
+      dockerfile: DownWithTheTodoList.Ms.Blocks/Dockerfile
+
+  downwiththetodolist.ms.tasks:
+    image: ${DOCKER_REGISTRY-}downwiththetodolistmstasks
+    build:
+      context: .
+      dockerfile: DownWithTheTodoList.Ms.Tasks/Dockerfile
+
+  redis:
+     image: redis

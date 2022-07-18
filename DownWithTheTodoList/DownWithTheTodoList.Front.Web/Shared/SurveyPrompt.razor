@@ -1,0 +1,35 @@
+﻿<div class="alert alert-secondary mt-4">
+    <span class="oi oi-pencil me-2" aria-hidden="true"></span>
+    
+    <strong>@Title</strong>
+
+    <strong>@MyRedisVar</strong>
+
+    <span class="text-nowrap">
+        Please take our
+        <a target="_blank" class="font-weight-bold link-dark" href="https://go.microsoft.com/fwlink/?linkid=2149017">brief survey</a>
+    </span>
+    and tell us what you think.
+</div>
+
+@code {
+    // Demonstrates how a parent component can supply parameters
+    [Parameter]
+    public string? Title { get; set; }
+
+    public string? MyRedisVar { get; set; } = "nah";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        using (var client = new System.Net.Http.HttpClient())
+        {
+            var request = new System.Net.Http.HttpRequestMessage();
+            request.RequestUri = new Uri("http://DownWithTheTodoList.Ms.Blocks/Counter");
+            var response = await client.SendAsync(request);
+            string counter = await response.Content.ReadAsStringAsync();
+            MyRedisVar = $"Counter value from cache :{counter}";
+        }
+        await base.OnParametersSetAsync();
+    }
+
+}
