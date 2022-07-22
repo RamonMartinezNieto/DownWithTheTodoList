@@ -1,24 +1,60 @@
-version: '3.4'
+version: '3.8'
 
 services:
 
-  downwiththetodolist.front.web:
-    image: ${DOCKER_REGISTRY-}downwiththetodolistfrontweb
-    build:
-      context: .
-      dockerfile: DownWithTheTodoList.Front.Web/Dockerfile
-
-  downwiththetodolist.ms.blocks:
-    image: ${DOCKER_REGISTRY-}downwiththetodolistmsblocks
-    build:
-      context: .
-      dockerfile: DownWithTheTodoList.Ms.Blocks/Dockerfile
-
-  downwiththetodolist.ms.tasks:
-    image: ${DOCKER_REGISTRY-}downwiththetodolistmstasks
-    build:
-      context: .
-      dockerfile: DownWithTheTodoList.Ms.Tasks/Dockerfile
+  db.blocks:
+    image: mysql
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--default-authentication-plugin=mysql_native_password']
+    restart: always
+    environment:
+      MYSQL_DATABASE: blocks
+      MYSQL_ROOT_PASSWORD: lapass
+      LANG: C.UTF_8
+    ports:
+      - '3307:3306'
+    volumes:
+      - db.blocks:/var/lib/mysql
+      - ./SQLScripts/blocks_init_script.sql:/docker-entrypoint-initdb.d/1.sql
+        
+  db.tasks:
+    image: mysql
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--default-authentication-plugin=mysql_native_password']    
+    restart: always
+    environment:
+      MYSQL_DATABASE: tasks
+      MYSQL_ROOT_PASSWORD: lapass
+      LANG: C.UTF_8
+    ports:
+      - '3308:3306'
+    volumes:
+      - db.tasks:/var/lib/mysql
+      - ./SQLScripts/tasks_init_script.sql:/docker-entrypoint-initdb.d/1.sql
+             
+  db.users:
+    image: mysql
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--default-authentication-plugin=mysql_native_password']    
+    restart: always
+    environment:
+      MYSQL_DATABASE: users
+      MYSQL_ROOT_PASSWORD: lapass
+      LANG: C.UTF_8
+    ports:
+      - '3309:3306'
+    volumes:
+      - db.users:/var/lib/mysql
+      - ./SQLScripts/users_init_script.sql:/docker-entrypoint-initdb.d/1.sql
 
   redis:
-     image: redis
+    image: redis
+
+volumes:
+  db.blocks:
+    driver: local  
+    
+  db.tasks:
+    driver: local
+
+  db.users:
+    driver: local
+
+
