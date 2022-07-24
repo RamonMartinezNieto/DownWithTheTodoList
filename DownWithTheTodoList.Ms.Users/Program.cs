@@ -11,7 +11,7 @@ builder.Services
     .AddSingleton(settings)
     .AddMySqlDbContext(settings)
     .AddScoped<UsersContext>()
-    .AddScoped<UsersRepository>();
+    .AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -25,5 +25,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
 
 app.Run();

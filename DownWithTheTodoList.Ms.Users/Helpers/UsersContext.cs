@@ -1,7 +1,4 @@
-﻿using DownWithTheTodoList.Core.Models.Settings;
-using Microsoft.EntityFrameworkCore;
-
-namespace DownWithTheTodoList.Ms.Users.Context;
+﻿namespace DownWithTheTodoList.Ms.Users.Context;
 
 public class UsersContext : DbContext
 {
