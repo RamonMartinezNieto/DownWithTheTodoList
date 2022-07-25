@@ -1,7 +1,7 @@
 namespace DownWithTheTodoList.Ms.Users.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
     private readonly ILogger<UsersController> _logger;
@@ -57,8 +57,8 @@ public class UsersController : ControllerBase
         }
     }
 
-    [HttpPost("Create")]
-    public async Task<IActionResult> Create(UserCreateRequest model)
+    [HttpPost]
+    public async Task<IActionResult> PostUsers(UserCreateRequest model)
     {
         try {
 
@@ -75,8 +75,8 @@ public class UsersController : ControllerBase
         }
     }
 
-    [HttpDelete("Delete/{id:Guid}")]
-    public async Task<IActionResult> Delete(Guid id)
+    [HttpDelete("{id:Guid}")]
+    public async Task<IActionResult> DeleteUsers(Guid id)
     {
         try
         {
@@ -93,8 +93,8 @@ public class UsersController : ControllerBase
         }
     }
 
-    [HttpPut("Update/{id:Guid}")]
-    public async Task<IActionResult> Update(Guid id, UserUpdateRequest model) 
+    [HttpPut("{id:Guid}")]
+    public async Task<IActionResult> PutUsers(Guid id, UserUpdateRequest model) 
     {
         try
         {
