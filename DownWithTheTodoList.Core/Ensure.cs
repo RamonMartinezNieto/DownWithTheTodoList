@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace DownWithTheTodoList.Core;
+﻿namespace DownWithTheTodoList.Core;
 
 public static class Ensure
 {
@@ -11,13 +9,20 @@ public static class Ensure
             throw (TException)Activator.CreateInstance(typeof(TException), message);
         }
     }
+        
+    private static void That<TException>(bool condition, int param) where TException : Exception
+    {
+        if (!condition)
+        {
+            throw (TException)Activator.CreateInstance(typeof(TException), param.ToString());
+        }
+    }
 
     public static T That<T>(T value) => value;
 
-    public static int IsBetween(this int value, int init, int end)
+    public static void IsBetween(this int value, int init, int end)
     {
-        That<ArgumentOutOfRangeException>(init < value && end > value, $"Value {value} cannot be out of the range {init} and {end}");
-        return value;
+        That<ArgumentOutOfRangeException>(init <= value && end >= value, value);
     }
 
     public static void NotNullOrEmpty(this string value) 

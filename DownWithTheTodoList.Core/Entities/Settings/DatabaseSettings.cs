@@ -10,10 +10,9 @@ public class DatabaseSettings
     public string User { get; init; }
     public string Password { get; init; }
     public Version Version { get; init; }
-    
     public string ConnectionString { get; private init; } 
 
-    public DatabaseSettings(string server, Port port, string database, string user, string password, Version version)
+    public DatabaseSettings(string server, Port? port, string database, string user, string password, Version version)
     {
         Server = server;
         Port = port;
@@ -25,15 +24,9 @@ public class DatabaseSettings
         ConnectionString = CreateConnetionString(this);
     }
 
-    public DatabaseSettings(string server, string database, string user, string password, Version version)
+    public DatabaseSettings(string server, string database, string user, string password, Version version) 
+        : this(server, null, database, user, password, version)
     {
-        Server = server;
-        Database = database;
-        User = user;
-        Password = password;
-        Version = version;
-
-        ConnectionString = CreateConnetionString(this);
     }
 
     private string CreateConnetionString(DatabaseSettings databaseSettings)
@@ -54,7 +47,5 @@ public class DatabaseSettings
 
         return builder.ToString();
     }
-
-
 
 }
