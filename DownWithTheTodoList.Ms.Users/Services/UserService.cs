@@ -20,7 +20,7 @@
 
     public async Task<bool> DeleteByIdAsync(Guid id)
     {
-        User user = _context.Users.Find(id);
+        User? user = _context.Users.Find(id);
         if(user != null) { 
             _context.Users.Remove(user);
             return await _context.SaveChangesAsync() > 0;
@@ -31,12 +31,12 @@
 
     public async Task<IEnumerable<User>> GetAllAsync()
     {
-        return _context.Users;
+        return await Task.Run(() => _context.Users);
     }
 
-    public async Task<User> GetByIdAsync(Guid id)
+    public async Task<User?> GetByIdAsync(Guid id)
     {
-        return _context.Users.Find(id);
+        return await Task.Run(() => _context.Users.Find(id));
     }
 
     public async Task<User> UpdateAsync(User user)
@@ -50,7 +50,6 @@
 
         throw new Exception("Some problem was occur");
     }
-
 
 
     private bool _disposed = false;

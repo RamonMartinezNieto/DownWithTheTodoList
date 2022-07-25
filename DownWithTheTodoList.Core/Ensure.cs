@@ -2,11 +2,11 @@
 
 public static class Ensure
 {
-    private static void That<TException>(bool condition, string message) where TException : Exception
+    private static void That<TException>(bool condition, string message) where TException : notnull, Exception
     {
         if (!condition)
         {
-            throw (TException)Activator.CreateInstance(typeof(TException), message);
+            throw (TException)Activator.CreateInstance(typeof(TException), message)!;
         }
     }
         
@@ -14,7 +14,7 @@ public static class Ensure
     {
         if (!condition)
         {
-            throw (TException)Activator.CreateInstance(typeof(TException), param.ToString());
+            throw (TException)Activator.CreateInstance(typeof(TException), param.ToString())!;
         }
     }
 
