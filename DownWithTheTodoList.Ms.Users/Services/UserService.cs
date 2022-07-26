@@ -25,7 +25,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating user with id {A0} and name {A1}", user.Id, user.NickName);
+            _logger.LogError(ex, "Error creating user with name {A1}", user.NickName);
             throw;
         }
         finally 
