@@ -11,6 +11,7 @@ global using DownWithTheTodoList.Ms.Users.Configurations;
 global using DownWithTheTodoList.Ms.Users.Services;
 global using DownWithTheTodoList.Ms.Users.Helpers;
 global using DownWithTheTodoList.Ms.Users.Models;
+global using DownWithTheTodoList.Ms.Users.Repositories;
 
 //From core project
 global using DownWithTheTodoList.Core.ValueObjects;

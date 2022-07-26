@@ -5,14 +5,14 @@ namespace DownWithTheTodoList.Ms.Users.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly ILogger<UsersController> _logger;
-    private readonly IUserService _userService;
+    private readonly IUserRepository _userRepository;
 
     public UsersController(
         ILogger<UsersController> logger,
-        IUserService service)
+        IUserRepository repository)
     {
         _logger = logger;
-        _userService = service;
+        _userRepository = repository;
     }
 
     [HttpGet]
@@ -22,7 +22,7 @@ public class UsersController : ControllerBase
 
         try
         {
-            var users = await _userService.GetAllAsync();
+            var users = await _userRepository.GetAllAsync();
 
             if (users.Any())
                 return Ok(users);
@@ -43,7 +43,7 @@ public class UsersController : ControllerBase
 
         try
         {
-            var users = await _userService.GetByIdAsync(id);
+            var users = await _userRepository.GetByIdAsync(id);
 
             if (users is not null)
                 return Ok(users);
@@ -62,7 +62,7 @@ public class UsersController : ControllerBase
     {
         try {
 
-            User result = await _userService.CreateAsync(model.ToUser());
+            User result = await _userRepository.CreateAsync(model.ToUser());
 
             return CreatedAtAction(
                 nameof(Get),
@@ -80,7 +80,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var result = await _userService.DeleteByIdAsync(id);
+            var result = await _userRepository.DeleteByIdAsync(id);
 
             if (result)
                 return Ok();
@@ -98,7 +98,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            User result = await _userService.UpdateAsync(model.ToUser(id));
+            User result = await _userRepository.UpdateAsync(model.ToUser(id));
             
             if(result is not null)
                 return Ok();

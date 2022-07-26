@@ -11,7 +11,9 @@ builder.Services
     .AddSingleton(settings)
     .AddMySqlDbContext(settings)
     .AddScoped<UsersContext>()
-    .AddScoped<IUserService, UserService>();
+    .AddScoped<IUserRepository, UserRepository>()
+    .AddScoped<IUserService, UserService>()
+    .AddLogging();
 
 var app = builder.Build();
 
