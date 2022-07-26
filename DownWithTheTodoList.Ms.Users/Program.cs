@@ -1,3 +1,5 @@
+using DownWithTheTodoList.Ms.Users.Logger;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -10,10 +12,10 @@ DatabaseSettings settings = settingsSections.CreateDatabaseSettings();
 builder.Services
     .AddSingleton(settings)
     .AddMySqlDbContext(settings)
-    .AddScoped<UsersContext>()
-    .AddScoped<IUserRepository, UserRepository>()
-    .AddScoped<IUserService, UserService>()
-    .AddLogging();
+    .AddTransient<UsersContext>()
+    .AddTransient<IUserRepository, UserRepository>()
+    .AddTransient<IUserService, UserService>()
+    .AddTransient(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 
 var app = builder.Build();
 

@@ -1,14 +1,15 @@
+
 namespace DownWithTheTodoList.Ms.Users.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
-    private readonly ILogger<UsersController> _logger;
+    private readonly ILoggerAdapter<UsersController> _logger;
     private readonly IUserRepository _userRepository;
 
     public UsersController(
-        ILogger<UsersController> logger,
+        ILoggerAdapter<UsersController> logger,
         IUserRepository repository)
     {
         _logger = logger;

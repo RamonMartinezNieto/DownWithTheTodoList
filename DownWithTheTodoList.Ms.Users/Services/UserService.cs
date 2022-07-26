@@ -2,10 +2,10 @@
 
 public class UserService : IUserService
 {
-    private readonly ILogger _logger;
+    private readonly ILoggerAdapter _logger;
     private readonly IUserRepository _repository;
 
-    public UserService(IUserRepository repository, ILogger<UserService> logger) 
+    public UserService(IUserRepository repository, ILoggerAdapter<UserService> logger) 
     {
         _repository = repository;
         _logger = logger;
