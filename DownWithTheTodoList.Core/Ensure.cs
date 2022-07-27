@@ -30,6 +30,21 @@ public static class Ensure
         That<Exception>(!String.IsNullOrEmpty(value), "String cannot be null or empty");
     }
 
+    public static void IsNotNull(this object? value)
+    {
+        That<Exception>(value is not null, "Object cannot be null or empty");
+    }
+
+    public static void IsNotNull<T>(this object? value, string message) where T : Exception
+    {
+        That<T>(value is not null, message);
+    }
+        
+    public static void IsNotNull<T>(this object? value) where T : Exception
+    {
+        That<T>(value is not null, "Object cannot be null or empty");
+    }
+
     public static void HaveFormat(this string value, string pattern) 
     {
         That<FormatException>(Regex.IsMatch(value, pattern), $"Invalid format of value {value}, check regex pattern");

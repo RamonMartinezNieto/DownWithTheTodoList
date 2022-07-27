@@ -1,4 +1,6 @@
-﻿namespace DownWithTheTodoList.Core.Unit.Tests;
+﻿using NSubstitute;
+
+namespace DownWithTheTodoList.Core.Unit.Tests;
 
 public class EnsureTests
 {
@@ -85,7 +87,7 @@ public class EnsureTests
     }
 
     [Fact]
-    public void Should_Throw_Exception_When_Is_Null()
+    public void Should_Throw_Exception_WhenString_Is_Null()
     {
         Action action = () => Ensure.That<string>(null!).NotNullOrEmpty();
 
@@ -93,7 +95,7 @@ public class EnsureTests
     }
 
     [Fact]
-    public void Should_Throw_Exception_When_Is_Emprty()
+    public void Should_Throw_Exception_WhenString_Is_Emprty()
     {
         Action action = () => Ensure.That("").NotNullOrEmpty();
 
@@ -119,4 +121,56 @@ public class EnsureTests
 
         action.Should().Throw<FormatException>();
     }
+
+
+    [Fact]
+    public void Should_Throw_Exception_WhenSomeObject_IsNull()
+    {
+        Object? obj = null;
+        Action action = () => Ensure.That(obj).IsNotNull();
+
+        action.Should().Throw<Exception>();
+    }
+
+    [Fact]
+    public void ShouldThrow_CustomException_WhenSomeObjectIsNull_AndExceptionIsDefined()
+    {
+        Object? obj = null;
+        Action action = () => Ensure.That(obj).IsNotNull<KeyNotFoundException>();
+
+        action.Should().Throw<KeyNotFoundException>();
+    }
+
+    [Fact]
+    public void ShouldThrow_CustomException_WhenSomeObjectIsNull_ExceptionIsDefined_WithCustomMessage()
+    {
+        Object? obj = null;
+        Action action = () => Ensure.That(obj).IsNotNull<KeyNotFoundException>("Null exception man!");
+
+        action.Should()
+            .Throw<KeyNotFoundException>()
+            .WithMessage("Null exception man!");
+    }
+
+
+    [Fact]
+    public void ShouldNotThrowException_WhenSomeObject_IsNotNull()
+    {
+        Object? obj = new ();
+        Action action = () => Ensure.That(obj).IsNotNull();
+    }
+
+    [Fact]
+    public void ShouldNotThrowException_WhenSomeObject_IsNotNull_CustomException()
+    {
+        Object? obj = new ();
+        Action action = () => Ensure.That(obj).IsNotNull<KeyNotFoundException>();
+    }
+    [Fact]
+    public void ShouldNotThrowException_WhenSomeObject_IsNotNull_CustomException_And_Custom_Message()
+    {
+        Object? obj = new ();
+        Action action = () => Ensure.That(obj).IsNotNull<KeyNotFoundException>("Null exception man!");
+    }
+
 }
