@@ -6,7 +6,7 @@ public static class ConfigurationDbContext
     {
         return new DatabaseSettings(
             section["Server"],
-            new Port(int.Parse(section["Port"])),
+            (Port)int.Parse(section["Port"]),
             section["Database"],
             section["User"],
             section["Password"],

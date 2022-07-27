@@ -15,4 +15,10 @@ public class Port
     {
         return Value.ToString();
     }
+
+    public static implicit operator int(Port _port) 
+        => _port.Value;
+
+    public static explicit operator Port(int _port) 
+        => new Port(_port);
 }
