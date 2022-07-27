@@ -46,14 +46,14 @@ public class UsersController : ControllerBase
         {
             var users = await _userRepository.GetByIdAsync(id);
 
-            if (users is not null)
-                return Ok(users);
-
-            return NoContent();
-
+            return Ok(users);
         }
-        catch {
-
+        catch (KeyNotFoundException ex)
+        {
+            return NoContent();
+        }
+        catch 
+        {
             return StatusCode(500);
         }
     }

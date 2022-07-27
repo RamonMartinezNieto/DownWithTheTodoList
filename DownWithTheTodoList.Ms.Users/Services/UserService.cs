@@ -1,4 +1,6 @@
-﻿namespace DownWithTheTodoList.Ms.Users.Services;
+﻿using DownWithTheTodoList.Core;
+
+namespace DownWithTheTodoList.Ms.Users.Services;
 
 public class UserService : IUserService
 {
@@ -42,7 +44,10 @@ public class UserService : IUserService
         {
             var result = await _repository.DeleteByIdAsync(id);
 
-            _logger.LogDebug("User deleted: {A0}",result);
+            if(result)
+                _logger.LogDebug("User deleted: {A0}",result);
+            else
+                _logger.LogDebug("User not deleted, id {0} not found", id);
 
             return result;
         }
@@ -89,13 +94,15 @@ public class UserService : IUserService
         {
             var result = await _repository.GetByIdAsync(id);
 
-            _logger.LogDebug("Users founded: {A0}", result?.NickName);
+            Ensure.That(result).IsNotNull<KeyNotFoundException>("There isn't any User with this id");
+            
+            _logger.LogDebug("User found: {A0}", result?.NickName);
 
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving all users");
+            _logger.LogError(ex, "Error retrieving the user with id {A0}", id);
             throw;
         }
         finally
