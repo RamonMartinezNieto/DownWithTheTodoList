@@ -32,7 +32,7 @@ public static class Ensure
 
     public static void IsNotNull(this object? value)
     {
-        That<Exception>(value is not null, "Object cannot be null or empty");
+        That<ArgumentNullException>(value is not null, "Object cannot be null or empty");
     }
 
     public static void IsNotNull<T>(this object? value, string message) where T : Exception
@@ -69,4 +69,10 @@ public static class Ensure
     {
         That<ArgumentOutOfRangeException>(value == equality, $"Value can't be different than {equality}");
     }
+
+    public static void IsTrue<TException>(this bool value, string message) where TException :  Exception
+    {
+        That<TException>(value, message);
+    }
+
 }

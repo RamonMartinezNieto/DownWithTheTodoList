@@ -1,6 +1,4 @@
-﻿using DownWithTheTodoList.Core;
-
-namespace DownWithTheTodoList.Ms.Users.Services;
+﻿namespace DownWithTheTodoList.Ms.Users.Services;
 
 public class UserService : IUserService
 {
@@ -13,7 +11,7 @@ public class UserService : IUserService
         _logger = logger;
     }
 
-    public async Task<User> CreateAsync(User user)
+    public async Task<UserResponse> CreateAsync(User user)
     {
         _logger.LogDebug("Creating user with name {A0}", user.NickName);
 
@@ -23,7 +21,7 @@ public class UserService : IUserService
 
             _logger.LogDebug("User created with id {A0}", user.Id);
 
-            return userResponse;
+            return userResponse.ToUserResponse();
         }
         catch (Exception ex)
         {
@@ -44,10 +42,9 @@ public class UserService : IUserService
         {
             var result = await _repository.DeleteByIdAsync(id);
 
-            if(result)
-                _logger.LogDebug("User deleted: {A0}",result);
-            else
-                _logger.LogDebug("User not deleted, id {0} not found", id);
+            Ensure.That(result).IsTrue<KeyNotFoundException>($"Not found any item with id {id}");
+
+            _logger.LogDebug("User deleted: {A0}",result);
 
             return result;
         }
@@ -111,21 +108,23 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<User> UpdateAsync(User user)
+    public async Task<UserResponse> UpdateAsync(User user)
     {
         _logger.LogDebug("Updating user with id {A0} and name {A1}", user.Id, user.NickName);
 
         try
         {
-            var userResponse = await _repository.CreateAsync(user);
+            var userResponse = await _repository.UpdateAsync(user);
 
-            _logger.LogDebug("User created with id {A0}", user.Id);
+            Ensure.That(userResponse).IsNotNull<KeyNotFoundException>("Error updating user");
 
-            return userResponse;
+            _logger.LogDebug("User updated with id {A0}", user.Id);
+
+            return userResponse.ToUserResponse();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating user with id {A0} and name {A1}", user.Id, user.NickName);
+            _logger.LogError(ex, "Error updating user with id {A0} and name {A1}", user.Id, user.NickName);
             throw;
         }
         finally

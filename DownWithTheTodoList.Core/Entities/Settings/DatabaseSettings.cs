@@ -37,7 +37,7 @@ public class DatabaseSettings
 
         if (Port is not null)
         {
-            builder.Append("Port=").Append(Port.Value).Append(';');
+            builder.Append("Port=").Append((int)Port).Append(';');
         }
 
         builder.Append("Database=").Append(Database).Append(';');

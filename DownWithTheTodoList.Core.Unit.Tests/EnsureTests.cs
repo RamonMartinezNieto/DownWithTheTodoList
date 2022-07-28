@@ -129,7 +129,7 @@ public class EnsureTests
         Object? obj = null;
         Action action = () => Ensure.That(obj).IsNotNull();
 
-        action.Should().Throw<Exception>();
+        action.Should().Throw<ArgumentNullException>();
     }
 
     [Fact]

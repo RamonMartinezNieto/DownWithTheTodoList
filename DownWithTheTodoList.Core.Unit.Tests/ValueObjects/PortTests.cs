@@ -26,7 +26,6 @@ public class PortTests
     {
         Port port = new(3306);
 
-        port.Value.Should().Be(3306);
-
+        ((int)port).Should().Be(3306);
     }
 }

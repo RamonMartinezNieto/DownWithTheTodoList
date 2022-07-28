@@ -2,23 +2,26 @@
 
 public class Port
 {
-    public int Value { get; }
+    private readonly int _value;
 
     public Port(int value)
     {
         Ensure.That(value).IsBetween(0, 65535);
 
-        Value = value;
+        _value = value;
     }
 
     public override string ToString()
-    {
-        return Value.ToString();
-    }
+        => _value.ToString();
 
     public static implicit operator int(Port _port) 
-        => _port.Value;
+        => _port._value;
 
     public static explicit operator Port(int _port) 
-        => new Port(_port);
+        => new (_port);
+
+    protected IEnumerable<object> GetAtomicValues() 
+    {
+        yield return _value;
+    }
 }

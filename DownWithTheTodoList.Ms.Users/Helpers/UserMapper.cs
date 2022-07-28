@@ -9,6 +9,13 @@ public static class UserMapper
     public static User ToUser(this UserUpdateRequest userModel, Guid id)
         => CreateUser(userModel.NickName, userModel.Password, id);
 
+    public static UserResponse ToUserResponse(this User user)
+        => new UserResponse()
+        {
+            Id = user.Id,
+            NickName = user.NickName,   
+        };
+
     private static User CreateUser(string nick, string pass, Guid id)
     {
         var user = CreateUser(nick, pass);
