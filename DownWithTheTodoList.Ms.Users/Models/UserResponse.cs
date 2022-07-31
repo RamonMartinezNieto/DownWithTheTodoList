@@ -3,5 +3,5 @@
 public class UserResponse
 {
     public Guid Id { get; set; }
-    public string NickName { get; init; } = default!;
+    public string NickName { get; init; } = default!;   
 }

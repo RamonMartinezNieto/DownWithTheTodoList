@@ -75,4 +75,9 @@ public static class Ensure
         That<TException>(value, message);
     }
 
+    public static void IsNotDefault<TObject, TException>(this TObject value, string message) where TException : Exception
+    {
+        That<TException>(!value!.Equals(default(TObject)), message);
+    }
+
 }

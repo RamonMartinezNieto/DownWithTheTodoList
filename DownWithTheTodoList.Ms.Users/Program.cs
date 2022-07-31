@@ -12,8 +12,9 @@ DatabaseSettings settings = settingsSections.CreateDatabaseSettings();
 builder.Services
     .AddSingleton(settings)
     .AddMySqlDbContext(settings)
-    .AddTransient<UsersContext>()
-    .AddTransient<IUserRepository, UserRepository>()
+    .AddSingleton<IUserMemoryCache , UserMemoryCache>() 
+    .AddScoped<UsersContext>()
+    .AddScoped<IUserRepository, UserRepository>()
     .AddTransient<IUserService, UserService>()
     .AddTransient(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 

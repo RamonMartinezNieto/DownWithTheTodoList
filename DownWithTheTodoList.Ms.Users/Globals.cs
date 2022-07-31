@@ -4,6 +4,7 @@ global using System.ComponentModel.DataAnnotations;
 // From Microsoft
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Caching.Memory;
 
 //From this project
 global using DownWithTheTodoList.Ms.Users.Context;

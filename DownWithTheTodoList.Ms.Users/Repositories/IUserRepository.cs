@@ -1,6 +1,6 @@
 ﻿namespace DownWithTheTodoList.Ms.Users.Repositories;
 
-public interface IUserRepository : IDisposable
+public interface IUserRepository
 {
     Task<IEnumerable<User>> GetAllAsync();
     Task<User?> GetByIdAsync(Guid id);

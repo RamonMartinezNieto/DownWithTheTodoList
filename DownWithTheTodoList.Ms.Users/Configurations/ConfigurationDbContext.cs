@@ -18,8 +18,8 @@ public static class ConfigurationDbContext
         services.AddDbContext<UsersContext>(
               dbContextOptions => dbContextOptions
                   .UseMySql(settings.ConnectionString, new MySqlServerVersion(settings.Version))
-                  .LogTo(Console.WriteLine, LogLevel.Information)
-                  .EnableSensitiveDataLogging()
+                  //.LogTo(Console.WriteLine, LogLevel.Information)
+                  //.EnableSensitiveDataLogging()
                   .EnableDetailedErrors()
           );
         

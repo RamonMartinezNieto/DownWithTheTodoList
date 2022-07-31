@@ -1,4 +1,6 @@
 
+using System.Diagnostics;
+
 namespace DownWithTheTodoList.Ms.Users.Controllers;
 
 [ApiController]
@@ -6,14 +8,14 @@ namespace DownWithTheTodoList.Ms.Users.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly ILoggerAdapter<UsersController> _logger;
-    private readonly IUserRepository _userRepository;
+    private readonly IUserService _userService;
 
     public UsersController(
         ILoggerAdapter<UsersController> logger,
-        IUserRepository repository)
+        IUserService userService)
     {
         _logger = logger;
-        _userRepository = repository;
+        _userService = userService;
     }
 
     [HttpGet]
@@ -23,7 +25,7 @@ public class UsersController : ControllerBase
 
         try
         {
-            var users = await _userRepository.GetAllAsync();
+            var users = await _userService.GetAllAsync();
 
             if (users.Any())
                 return Ok(users);
@@ -40,15 +42,20 @@ public class UsersController : ControllerBase
     [HttpGet("{id:Guid}")]
     public async Task<IActionResult> Get(Guid id)
     {
+        Stopwatch sw = new();
+        sw.Start();
         _logger.LogInformation("Llamando al método GEt");
 
         try
         {
-            var users = await _userRepository.GetByIdAsync(id);
+            var users = await _userService.GetByIdAsync(id);
+
+            sw.Stop();
+            _logger.LogInformation(sw.Elapsed.ToString());
 
             return Ok(users);
         }
-        catch (KeyNotFoundException ex)
+        catch (KeyNotFoundException)
         {
             return NoContent();
         }
@@ -63,7 +70,7 @@ public class UsersController : ControllerBase
     {
         try {
 
-            User result = await _userRepository.CreateAsync(model.ToUser());
+            var result = await _userService.CreateAsync(model.ToUser());
 
             return CreatedAtAction(
                 nameof(Get),
@@ -81,7 +88,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var result = await _userRepository.DeleteByIdAsync(id);
+            var result = await _userService.DeleteByIdAsync(id);
 
             if (result)
                 return Ok();
@@ -99,7 +106,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            User result = await _userRepository.UpdateAsync(model.ToUser(id));
+            var result = await _userService.UpdateAsync(model.ToUser(id));
             
             if(result is not null)
                 return Ok();

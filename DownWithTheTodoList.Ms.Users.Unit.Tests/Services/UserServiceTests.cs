@@ -6,6 +6,7 @@ namespace DownWithTheTodoList.Ms.Users.Unit.Tests.Services
     {
         private UserService _sut; 
         private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
+        private readonly IUserMemoryCache _userMemCache = Substitute.For<IUserMemoryCache>();
         private readonly ILoggerAdapter<UserService> _loggerAdapter = Substitute.For<ILoggerAdapter<UserService>>();
 
         public User genericUser = new()
@@ -16,7 +17,7 @@ namespace DownWithTheTodoList.Ms.Users.Unit.Tests.Services
 
         public UserServiceTests()
         {
-            _sut = new UserService(_userRepository, _loggerAdapter);
+            _sut = new UserService(_userRepository, _userMemCache, _loggerAdapter);
         }
 
         [Fact]
@@ -238,12 +239,13 @@ namespace DownWithTheTodoList.Ms.Users.Unit.Tests.Services
         public async void GetByIdAsync_ShouldReturn_User_WhenIdAreValid()
         {
             genericUser.Id = Guid.NewGuid();
-             _userRepository.GetByIdAsync(genericUser.Id).Returns(genericUser);
+            
+            _userRepository.GetByIdAsync(genericUser.Id).Returns(genericUser);
            
             var result = await _sut.GetByIdAsync(genericUser.Id);
 
             result.Should().NotBeNull();
-            result.Should().Be(genericUser);
+            result.Should().BeEquivalentTo(genericUser.ToUserResponse());
         }
 
         [Fact]
